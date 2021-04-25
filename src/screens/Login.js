@@ -1,12 +1,17 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Button, Form } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../features/auth.js";
 
 export default () => {
   const { t } = useTranslation();
   const usernameInputRef = useRef();
+  const history = useHistory();
+  const [authFailed, setAuthFailed] = useState(false);
+  const auth = useAuth();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -19,7 +24,20 @@ export default () => {
         username: yup.string().required(),
         password: yup.string().required(),
       })}
-      onSubmit={console.log}
+      onSubmit={async (values) => {
+        setAuthFailed(false);
+
+        try {
+          await auth.logIn(values);
+          history.replace("/");
+        } catch (error) {
+          if (error?.response?.status === 401) {
+            setAuthFailed(true);
+            return;
+          }
+          throw error;
+        }
+      }}
     >
       {(props) => {
         return (
@@ -37,6 +55,7 @@ export default () => {
                       name="username"
                       id="username"
                       autoComplete="username"
+                      isInvalid={authFailed}
                       required
                       ref={usernameInputRef}
                     />
@@ -52,6 +71,7 @@ export default () => {
                       name="password"
                       id="password"
                       autoComplete="current-password"
+                      isInvalid={authFailed}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
