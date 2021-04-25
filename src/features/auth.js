@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 import axios from "axios";
 import routes from "../routes.js";
 
@@ -27,9 +21,7 @@ const getSavedUser = () => {
 
 export const Provider = ({ children }) => {
   const [user, setUser] = useState(getSavedUser());
-  const getAuthHeader = () => {
-    return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
-  };
+
   const logIn = async ({ username, password }) => {
     const { data: user } = await axios.post(routes.login(), {
       username,
@@ -42,23 +34,23 @@ export const Provider = ({ children }) => {
     localStorage.removeItem("user");
     setUser(null);
   };
-  const getUserData = async () => {
-    try {
-      const { data: userData } = await axios.get(routes.me(), {
-        headers: getAuthHeader(),
-      });
-      return userData;
-    } catch (error) {
-      logOut();
-      throw error;
-    }
+
+  const getAuthHeader = () => {
+    return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
   };
 
-  const value = useMemo(() => ({ user, getUserData, logIn, logOut }), [
+  const request = (config) => {
+    return axios({
+      ...config,
+      headers: { ...config.headers, ...getAuthHeader() },
+    });
+  };
+
+  const value = useMemo(() => ({ user, logIn, logOut, request }), [
     user,
-    getUserData,
     logIn,
     logOut,
+    request,
   ]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
