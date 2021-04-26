@@ -12,27 +12,27 @@ export default () => {
   const history = useHistory();
   const auth = useAuth();
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
   useEffect(async () => {
     try {
-      setIsLoading(true);
+      setLoading(true);
       const { data } = await auth.request(routes.dataPath());
       dispatch(initChannels({ channels: data.channels }));
       dispatch(initChat({ messages: data.messages }));
-      setIsLoading(false);
+      setLoading(false);
     } catch (error) {
-      setIsLoading(false);
+      setLoading(false);
       if (error?.response?.status === 401) {
         history.replace("/login");
         return;
       }
       throw error;
     }
-  }, [history, dispatch, setIsLoading, auth]);
+  }, [history, dispatch, setLoading, auth]);
 
-  return isLoading ? (
+  return loading ? (
     <Spinner animation="grow" role="status" variant="primary">
       <span className="sr-only">{t("loading")}</span>
     </Spinner>

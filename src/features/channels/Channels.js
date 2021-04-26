@@ -1,69 +1,45 @@
-import React from "react";
-import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useChannels } from "./index.js";
+import { Button } from "react-bootstrap";
+import Channel from "./Channel.js";
+import ChannelsModal, {
+  Provider as ChannelsModalProvider,
+  useChannelsModal,
+} from "./ChannelsModal.js";
 
-const Channel = ({ channel }) => {
+const ChannelsHeader = () => {
   const { t } = useTranslation();
-  const { removeChannel, activeChannelId, activateChannel } = useChannels();
-
-  const variant = channel.id === activeChannelId ? "primary" : "light";
-
-  const ChannelButton = (
-    <Button
-      type="button"
-      key={channel.id}
-      className="text-left flex-grow-1 nav-link"
-      onClick={() => activateChannel(channel.id)}
-      variant={variant}
-      style={{ width: "100%" }}
-    >
-      {channel.name}
-    </Button>
-  );
+  const modal = useChannelsModal();
 
   return (
-    <li key={channel.id} className="nav-item" style={{ marginBottom: 8 }}>
-      {channel.removable ? (
-        <Dropdown as={ButtonGroup} className="d-flex mb-2">
-          {ChannelButton}
-          <Dropdown.Toggle split className="flex-grow-0" variant={variant} />
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => removeChannel(channel.id)}>
-              {t("channels.remove")}
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      ) : (
-        ChannelButton
-      )}
-    </li>
+    <div className="d-flex mb-2">
+      <span>{t("channels.channels")}</span>
+      <Button
+        type="button"
+        variant="link"
+        className="ml-auto p-0"
+        onClick={() => modal.open({ type: "channel_create" })}
+      >
+        +
+      </Button>
+    </div>
   );
 };
 
 const Channels = () => {
-  const { t } = useTranslation();
-  const { channels, createChannel } = useChannels();
+  const { channels } = useChannels();
 
   return (
-    <>
-      <div className="d-flex mb-2">
-        <span>{t("channels.channels")}</span>
-        <Button
-          type="button"
-          variant="link"
-          className="ml-auto p-0"
-          onClick={() => createChannel({ name: "test" })}
-        >
-          +
-        </Button>
-      </div>
+    <ChannelsModalProvider>
+      <ChannelsHeader />
       <ul className="nav flex-column nav-pills nav-fill">
         {channels.map((channel) => (
           <Channel key={channel.id} channel={channel} />
         ))}
       </ul>
-    </>
+      <ChannelsModal />
+    </ChannelsModalProvider>
   );
 };
 

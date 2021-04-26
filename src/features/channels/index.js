@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useApi } from "../api.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getChatMessages } from "../chat/index.js";
+import { useEffect, useState } from "react";
+import remove from "lodash-es/remove.js";
 
 export const channelsSlice = createSlice({
   name: "channels",
@@ -15,9 +15,17 @@ export const channelsSlice = createSlice({
     addChannel: (draft, { payload }) => {
       draft.channels.push(payload.channel);
     },
+    editChannel: (draft, { payload }) => {
+      const channel = draft.channels.find(
+        ({ id }) => id === payload.channel.id
+      );
+      channel.name = payload.channel.name;
+    },
     removeChannel: (draft, { payload }) => {
-      const index = draft.channels.findIndex(({ id }) => id === payload.id);
-      if (index !== -1) draft.channels.splice(index, 1);
+      remove(draft.channels, ({ id }) => id === payload.id);
+      if (draft.activeChannelId === payload.id) {
+        draft.activeChannelId = draft.channels[0]?.id ?? null;
+      }
     },
     activateChannel: (draft, { payload }) => {
       draft.activeChannelId = payload;
@@ -25,44 +33,53 @@ export const channelsSlice = createSlice({
   },
 });
 
-const { addChannel, removeChannel } = channelsSlice.actions;
+const { addChannel, editChannel } = channelsSlice.actions;
 
-export const { init } = channelsSlice.actions;
+export const { init, removeChannel } = channelsSlice.actions;
 
 export const getChannels = ({ channels }) => channels;
-
-export const getActiveChannelId = (state) => {
-  const channels = getChannels(state);
-  return channels.activeChannelId;
-};
 
 export default channelsSlice.reducer;
 
 export const useChannels = () => {
   const { socket } = useApi();
   const { channels, activeChannelId } = useSelector(getChannels);
-  const dispatch = useDispatch();
   const createChannel = async ({ name }) => {
     await socket.emitWithAcknowledge("newChannel", { name });
-  };
-  const removeChannel = async (id) => {
-    await socket.emitWithAcknowledge("removeChannel", { id });
-  };
-  const activateChannel = (id) => {
-    dispatch(channelsSlice.actions.activateChannel(id));
   };
 
   return {
     channels,
-    createChannel,
-    removeChannel,
     activeChannelId,
-    activateChannel,
+    createChannel,
   };
 };
 
+export const useChannel = (id) => {
+  const { socket } = useApi();
+  const dispatch = useDispatch();
+  const { activeChannelId } = useChannels();
+
+  const isActive = activeChannelId === id;
+
+  const channel = useSelector((state) =>
+    state.channels.channels.find((channel) => channel.id === id)
+  );
+  const editChannel = async ({ name }) => {
+    await socket.emitWithAcknowledge("renameChannel", { id, name });
+  };
+  const removeChannel = async () => {
+    await socket.emitWithAcknowledge("removeChannel", { id });
+  };
+  const activateChannel = () => {
+    dispatch(channelsSlice.actions.activateChannel(id));
+  };
+
+  return { channel, isActive, editChannel, removeChannel, activateChannel };
+};
+
 export const getChannelMessages = (state, channelId) => {
-  const messages = getChatMessages(state);
+  const messages = state.chat.messages;
   return messages.filter((message) => message.channelId === channelId);
 };
 
@@ -77,16 +94,22 @@ export const useListeners = (socket) => {
   const handleCreateChannel = (payload) => {
     dispatch(addChannel({ channel: payload }));
   };
+  const handleEditChannel = (payload) => {
+    console.log("renamed", payload);
+    dispatch(editChannel({ channel: payload }));
+  };
   const handleRemoveChannel = (payload) => {
     dispatch(removeChannel({ id: payload.id }));
   };
 
   useEffect(() => {
     socket.on("newChannel", handleCreateChannel);
+    socket.on("renameChannel", handleEditChannel);
     socket.on("removeChannel", handleRemoveChannel);
 
     return () => {
       socket.off("newChannel", handleCreateChannel);
+      socket.off("renameChannel", handleEditChannel);
       socket.off("removeChannel", handleRemoveChannel);
     };
   }, [socket]);

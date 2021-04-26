@@ -2,8 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useApi } from "../api.js";
-import { useChannels } from "../channels/index.js";
+import { useChannels, removeChannel } from "../channels/index.js";
 import { useAuth } from "../auth.js";
+import remove from "lodash-es/remove.js";
 
 export const chatSlice = createSlice({
   name: "chat",
@@ -16,13 +17,16 @@ export const chatSlice = createSlice({
       draft.messages.push(payload.message);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(removeChannel, (draft, { payload }) => {
+      remove(draft.messages, (message) => message.channelId === payload.id);
+    });
+  },
 });
 
 export const { init } = chatSlice.actions;
 
 export const getChat = ({ chat }) => chat;
-
-export const getChatMessages = ({ chat }) => chat.messages;
 
 export default chatSlice.reducer;
 
