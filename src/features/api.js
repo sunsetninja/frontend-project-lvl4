@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { useListeners as useChannelsListeners } from "./channels/index.js";
+import { useListeners as useChatListeners } from "./chat/index.js";
 
 const APIContext = createContext({ socket: null });
 
@@ -15,6 +16,7 @@ const withAcknowledge = (fn) => (...args) => {
 
 export const Provider = ({ children, socket }) => {
   useChannelsListeners(socket);
+  useChatListeners(socket);
 
   socket.emitWithAcknowledge = withAcknowledge((...args) => {
     socket.emit(...args);

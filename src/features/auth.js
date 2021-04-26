@@ -39,7 +39,13 @@ export const Provider = ({ children }) => {
     return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
   };
 
-  const request = (config) => {
+  const request = (configOrUrl = {}) => {
+    let config;
+    if (typeof configOrUrl === "string") {
+      config = { url: configOrUrl };
+    } else {
+      config = configOrUrl;
+    }
     return axios({
       ...config,
       headers: { ...config.headers, ...getAuthHeader() },

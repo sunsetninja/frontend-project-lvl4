@@ -18,9 +18,7 @@ export default () => {
   useEffect(async () => {
     try {
       setIsLoading(true);
-      const { data } = await auth.request({
-        url: routes.dataPath(),
-      });
+      const { data } = await auth.request(routes.dataPath());
       dispatch(initChannels({ channels: data.channels }));
       dispatch(initChat({ messages: data.messages }));
       setIsLoading(false);
@@ -39,15 +37,13 @@ export default () => {
       <span className="sr-only">{t("loading")}</span>
     </Spinner>
   ) : (
-    <>
-      <div className="row flex-grow-1 h-75 pb-3">
-        <div className="col-3 border-right">
-          <Channels />
-        </div>
-        <div className="col h-100">
-          <Chat />
-        </div>
+    <div className="row flex-grow-1 h-75 pb-3">
+      <div className="col-3 border-right">
+        <Channels />
       </div>
-    </>
+      <div className="col h-100">
+        <Chat />
+      </div>
+    </div>
   );
 };

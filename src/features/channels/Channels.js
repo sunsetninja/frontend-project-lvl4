@@ -1,13 +1,49 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { getChannels, useChannels } from "./index.js";
+import { useChannels } from "./index.js";
+
+const Channel = ({ channel }) => {
+  const { t } = useTranslation();
+  const { removeChannel, activeChannelId, activateChannel } = useChannels();
+
+  const variant = channel.id === activeChannelId ? "primary" : "light";
+
+  const ChannelButton = (
+    <Button
+      type="button"
+      key={channel.id}
+      className="text-left flex-grow-1 nav-link"
+      onClick={() => activateChannel(channel.id)}
+      variant={variant}
+      style={{ width: "100%" }}
+    >
+      {channel.name}
+    </Button>
+  );
+
+  return (
+    <li key={channel.id} className="nav-item" style={{ marginBottom: 8 }}>
+      {channel.removable ? (
+        <Dropdown as={ButtonGroup} className="d-flex mb-2">
+          {ChannelButton}
+          <Dropdown.Toggle split className="flex-grow-0" variant={variant} />
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => removeChannel(channel.id)}>
+              {t("channels.remove")}
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      ) : (
+        ChannelButton
+      )}
+    </li>
+  );
+};
 
 const Channels = () => {
   const { t } = useTranslation();
-  const { channels } = useSelector(getChannels);
-  const { createChannel, removeChannel } = useChannels();
+  const { channels, createChannel } = useChannels();
 
   return (
     <>
@@ -17,26 +53,14 @@ const Channels = () => {
           type="button"
           variant="link"
           className="ml-auto p-0"
-          onClick={async () => {
-            await createChannel({ name: "test" });
-          }}
+          onClick={() => createChannel({ name: "test" })}
         >
           +
         </Button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
         {channels.map((channel) => (
-          <li key={channel.id} className="nav-item">
-            {channel.name}
-            <Button
-              size="sm"
-              onClick={async () => {
-                await removeChannel(channel.id);
-              }}
-            >
-              X
-            </Button>
-          </li>
+          <Channel key={channel.id} channel={channel} />
         ))}
       </ul>
     </>
