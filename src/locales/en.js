@@ -1,5 +1,18 @@
 export default {
   translation: {
+    validation: {
+      mixed: {
+        required: "Required",
+        uniq: "Must be unique",
+      },
+      string: {
+        min: "Min ${min} characters",
+        max: "Max ${max} characters",
+      },
+      password: {
+        match: "Passwords must match",
+      },
+    },
     channels: {
       remove: "Remove",
       rename: "Rename",
@@ -16,10 +29,6 @@ export default {
     },
     modals: {
       add: "Add channel",
-      required: "Required",
-      min: "Must be 3 to 20 characters",
-      max: "Must be 3 to 20 characters",
-      uniq: "Must be unique",
       cancel: "Cancel",
       submit: "Submit",
       remove: "Remove channel",
@@ -33,13 +42,9 @@ export default {
       send: "Send",
     },
     signup: {
-      required: "Required",
-      passMin: "Min 6 characters",
-      mustMatch: "Passwords must match",
       username: "Username",
-      usernameConstraints: "3 to 20 characters",
       password: "Password",
-      confirm: "Confirm password",
+      passwordConfirm: "Confirm password",
       alreadyExists: "Username already taken",
       submit: "Submit",
     },

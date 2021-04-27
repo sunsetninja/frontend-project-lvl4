@@ -6,9 +6,22 @@ import { Provider as AuthProvider } from "./features/auth.js";
 import { Provider as ApiProvider } from "./features/api.js";
 import App from "./App.js";
 import createStore from "./store.js";
+import * as yup from "yup";
 
 export default async (socket) => {
   const i18n = await initI18n();
+  yup.setLocale({
+    mixed: {
+      required: i18n.t("validation.mixed.required"),
+      uniq: i18n.t("validation.mixed.uniq"),
+    },
+    string: {
+      string: {
+        min: ({ min }) => i18n.t("validation.string.min", { min }),
+        max: ({ max }) => i18n.t("validation.string.max", { max }),
+      },
+    },
+  });
   const store = createStore();
 
   return (

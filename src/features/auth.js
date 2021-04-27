@@ -30,6 +30,14 @@ export const Provider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
   };
+  const signUp = async ({ username, password }) => {
+    const { data: user } = await axios.post(routes.signup(), {
+      username,
+      password,
+    });
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
+  };
   const logOut = () => {
     localStorage.removeItem("user");
     setUser(null);
@@ -52,9 +60,10 @@ export const Provider = ({ children }) => {
     });
   };
 
-  const value = useMemo(() => ({ user, logIn, logOut, request }), [
+  const value = useMemo(() => ({ user, logIn, signUp, logOut, request }), [
     user,
     logIn,
+    signUp,
     logOut,
     request,
   ]);

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Formik } from "formik";
+import * as yup from "yup";
 import { Button, Form } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../features/auth.js";
 import FormField from "../components/FormField.js";
@@ -10,7 +11,7 @@ export default () => {
   const { t } = useTranslation();
   const usernameInputRef = useRef();
   const history = useHistory();
-  const [authFailed, setAuthFailed] = useState(false);
+  const [signupFailed, setSignupFailed] = useState(false);
   const auth = useAuth();
 
   useEffect(() => {
@@ -19,19 +20,33 @@ export default () => {
 
   return (
     <Formik
-      initialValues={{ username: "", password: "" }}
+      initialValues={{ username: "", password: "", password_confirm: "" }}
+      validationSchema={yup.object().shape({
+        username: yup.string().trim().required().min(3).max(20),
+        password: yup.string().trim().required().min(6),
+        password_confirm: yup
+          .string()
+          .test(
+            "password_confirm",
+            t("validation.password.match"),
+            (value, context) => value === context.parent.password
+          ),
+      })}
       onSubmit={async (values, { setSubmitting }) => {
-        setAuthFailed(false);
+        setSignupFailed(false);
         setSubmitting(true);
 
         try {
-          await auth.logIn(values);
+          await auth.signUp({
+            username: values.username,
+            password: values.password,
+          });
           setSubmitting(false);
           history.replace("/");
         } catch (error) {
           setSubmitting(false);
-          if (error?.response?.status === 401) {
-            setAuthFailed(true);
+          if (error?.response?.status === 409) {
+            setSignupFailed(true);
             return;
           }
           throw error;
@@ -46,20 +61,25 @@ export default () => {
                 <Form onSubmit={props.handleSubmit} className="p-3">
                   <FormField
                     name={"username"}
-                    label={t("login.username")}
+                    label={t("signup.username")}
                     ref={usernameInputRef}
-                    isInvalid={authFailed}
-                    autoComplete="username"
+                    isInvalid={signupFailed}
+                    error={signupFailed ? t("signup.alreadyExists") : null}
                     required={true}
                   />
                   <FormField
                     name={"password"}
-                    label={t("login.password")}
-                    autoComplete="current-password"
+                    label={t("signup.password")}
+                    isInvalid={signupFailed}
                     type="password"
                     required={true}
-                    isInvalid={authFailed}
-                    error={authFailed ? t("login.authFailed") : null}
+                  />
+                  <FormField
+                    name={"password_confirm"}
+                    label={t("signup.passwordConfirm")}
+                    isInvalid={signupFailed}
+                    type="password"
+                    required={true}
                   />
                   <Button
                     type="submit"
@@ -67,12 +87,8 @@ export default () => {
                     className="w-100 mb-3"
                     disabled={props.isSubmitting}
                   >
-                    {t("login.submit")}
+                    {t("signup.submit")}
                   </Button>
-                  <div className="d-flex flex-column align-items-center">
-                    <span className="small mb-2">{t("login.newToChat")}</span>{" "}
-                    <Link to="/signup">{t("login.signup")}</Link>
-                  </div>
                 </Form>
               </div>
             </div>

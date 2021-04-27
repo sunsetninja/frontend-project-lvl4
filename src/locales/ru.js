@@ -1,5 +1,18 @@
 export default {
   translation: {
+    validation: {
+      mixed: {
+        required: "Обязательное поле",
+        uniq: "Должно быть уникальным",
+      },
+      string: {
+        min: "Не менее ${min} символов",
+        max: "Не более ${max} символов",
+      },
+      password: {
+        match: "Пароли должны совпадать",
+      },
+    },
     channels: {
       remove: "Удалить",
       rename: "Переименовать",
@@ -16,10 +29,6 @@ export default {
     },
     modals: {
       add: "Добавить канал",
-      required: "Обязательное поле",
-      min: "От 3 до 20 символов",
-      max: "От 3 до 20 символов",
-      uniq: "Должно быть уникальным",
       cancel: "Отменить",
       submit: "Отправить",
       remove: "Удалить канал",
@@ -33,13 +42,9 @@ export default {
       send: "Отправить",
     },
     signup: {
-      required: "Обязательное поле",
-      passMin: "Не менее 6 символов",
-      mustMatch: "Пароли должны совпадать",
       username: "Имя пользователя",
-      usernameConstraints: "От 3 до 20 символов",
       password: "Пароль",
-      confirm: "Подтвердите пароль",
+      passwordConfirm: "Подтвердите пароль",
       alreadyExists: "Такой пользователь уже существует",
       submit: "Зарегистрироваться",
     },
