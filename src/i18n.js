@@ -6,7 +6,7 @@ export default async () => {
   const i18n = i18next.createInstance();
 
   await i18n.use(initReactI18next).init({
-    fallbackLng: "en",
+    fallbackLng: "ru",
     debug: true,
     interpolation: {
       escapeValue: false,
