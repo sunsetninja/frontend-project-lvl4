@@ -11,7 +11,9 @@ export default {
       },
       password: {
         match: "Passwords must match",
+        min: "Min 6 characters",
       },
+      username: "3 to 20 characters",
     },
     channels: {
       remove: "Remove",

@@ -34,6 +34,7 @@ const ChatMessageForm = () => {
                 value={props.values.text}
                 onChange={props.handleChange}
                 ref={textInputRef}
+                data-testid="new-message"
               />
               <InputGroup.Append>
                 <Button variant="primary" type="submit">

@@ -11,7 +11,9 @@ export default {
       },
       password: {
         match: "Пароли должны совпадать",
+        min: "Не менее 6 символов",
       },
+      username: "От 3 до 20 символов",
     },
     channels: {
       remove: "Удалить",

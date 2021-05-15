@@ -142,6 +142,7 @@ const ChannelCreateForm = () => {
                   isInvalid={props.errors.name && props.touched.name}
                   name="name"
                   aria-label="add channel"
+                  data-testid="add-channel"
                 />
                 <Form.Control.Feedback type="invalid">
                   {t(props.errors.name)}
@@ -217,7 +218,8 @@ const ChannelEditForm = () => {
                   value={props.values.name}
                   isInvalid={props.errors.name && props.touched.name}
                   name="name"
-                  aria-label="add channel"
+                  aria-label="edit channel"
+                  data-testid="edit-channel"
                 />
                 <Form.Control.Feedback type="invalid">
                   {t(props.errors.name)}

@@ -22,8 +22,17 @@ export default () => {
     <Formik
       initialValues={{ username: "", password: "", password_confirm: "" }}
       validationSchema={yup.object().shape({
-        username: yup.string().trim().required().min(3).max(20),
-        password: yup.string().trim().required().min(6),
+        username: yup
+          .string()
+          .trim()
+          .required()
+          .min(3, t("validation.username"))
+          .max(20, t("validation.username")),
+        password: yup
+          .string()
+          .trim()
+          .required()
+          .min(6, t("validation.password.min")),
         password_confirm: yup
           .string()
           .test(

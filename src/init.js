@@ -27,8 +27,6 @@ export default async (socket) => {
   });
   const store = createStore();
 
-  console.log("here");
-
   return (
     <ReduxProvider store={store}>
       <I18nextProvider i18n={i18n}>
