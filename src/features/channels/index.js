@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { useApi } from "../api.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import remove from "lodash-es/remove.js";
+import remove from "lodash/remove.js";
 
 export const channelsSlice = createSlice({
   name: "channels",

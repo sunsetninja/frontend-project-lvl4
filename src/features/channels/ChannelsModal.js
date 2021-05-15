@@ -3,7 +3,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { useChannel, useChannels } from "./index.js";
 import { useTranslation } from "react-i18next";
 import { createContext, useContext, useMemo, useState } from "react";
-import property from "lodash-es/property.js";
+import property from "lodash/property.js";
 import * as yup from "yup";
 import { Formik, setIn } from "formik";
 

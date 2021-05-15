@@ -39,7 +39,6 @@
     "i18next": "^20.2.1",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21",
     "pino-pretty": "^4.7.1",
     "point-of-view": "^4.14.0",
     "popper.js": "^1.16.1",

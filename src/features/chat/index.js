@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useApi } from "../api.js";
 import { useChannels, removeChannel } from "../channels/index.js";
 import { useAuth } from "../auth.js";
-import remove from "lodash-es/remove.js";
+import remove from "lodash/remove.js";
 
 export const chatSlice = createSlice({
   name: "chat",
