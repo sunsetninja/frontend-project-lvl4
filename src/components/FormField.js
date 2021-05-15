@@ -10,6 +10,7 @@ const FormField = React.forwardRef((props, ref) => {
       <Form.Label htmlFor={props.name}>{props.label}</Form.Label>
       <Form.Control
         {...field}
+        id={props.name}
         isInvalid={(touched && error) || props.isInvalid}
         required={props.required}
         ref={ref}
