@@ -1,8 +1,11 @@
-import React from "react";
-import { useField } from "formik";
-import { Form } from "react-bootstrap";
+import React from 'react';
+import { useField } from 'formik';
+import { Form } from 'react-bootstrap';
 
-function FormField({ name, label, isInvalid, required, type, error: propsError }, ref) {
+function FormField(props, ref) {
+  const {
+    name, label, isInvalid, required, type, error: propsError,
+  } = props;
   const [field, { error, touched }] = useField(name);
 
   return (

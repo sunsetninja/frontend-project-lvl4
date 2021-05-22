@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Formik } from "formik";
-import { Button, Form } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useAuth } from "../features/auth.jsx";
-import FormField from "../components/FormField.jsx";
-import routes from "../routes.js";
+import React, { useEffect, useRef, useState } from 'react';
+import { Formik } from 'formik';
+import { Button, Form } from 'react-bootstrap';
+import { Link, useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../features/auth.jsx';
+import FormField from '../components/FormField.jsx';
+import routes from '../routes.js';
 
 function Login() {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ function Login() {
 
   return (
     <Formik
-      initialValues={{ username: "", password: "" }}
+      initialValues={{ username: '', password: '' }}
       onSubmit={async (values, { setSubmitting }) => {
         setAuthFailed(false);
         setSubmitting(true);
@@ -28,7 +28,7 @@ function Login() {
         try {
           await auth.logIn(values);
           setSubmitting(false);
-          history.replace("/");
+          history.replace('/');
         } catch (error) {
           setSubmitting(false);
           if (error?.response?.status === 401) {
@@ -46,7 +46,7 @@ function Login() {
               <Form onSubmit={props.handleSubmit} className="p-3">
                 <FormField
                   name="username"
-                  label={t("login.username")}
+                  label={t('login.username')}
                   ref={usernameInputRef}
                   isInvalid={authFailed}
                   autoComplete="username"
@@ -54,12 +54,12 @@ function Login() {
                 />
                 <FormField
                   name="password"
-                  label={t("login.password")}
+                  label={t('login.password')}
                   autoComplete="current-password"
                   type="password"
                   required
                   isInvalid={authFailed}
-                  error={authFailed ? t("login.authFailed") : null}
+                  error={authFailed ? t('login.authFailed') : null}
                 />
                 <Button
                   type="submit"
@@ -67,11 +67,13 @@ function Login() {
                   className="w-100 mb-3"
                   disabled={props.isSubmitting}
                 >
-                  {t("login.submit")}
+                  {t('login.submit')}
                 </Button>
                 <div className="d-flex flex-column align-items-center">
-                  <span className="small mb-2">{t("login.newToChat")}</span>{" "}
-                  <Link to={routes.signup()}>{t("login.signup")}</Link>
+                  <span className="small mb-2">
+                    {t('login.newToChat')}
+                  </span>
+                  <Link to={routes.signup()}>{t('login.signup')}</Link>
                 </div>
               </Form>
             </div>

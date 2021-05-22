@@ -1,5 +1,5 @@
 function NotFound() {
-  return "not found";
+  return 'not found';
 }
 
 export default NotFound;

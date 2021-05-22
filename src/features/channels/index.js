@@ -1,19 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import remove from "lodash/remove.js";
-import find from "lodash/find.js";
-// eslint-disable-next-line import/no-cycle
-import { useApi } from "../api.jsx";
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-param-reassign */
+
+import { createSlice } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import remove from 'lodash/remove.js';
+import find from 'lodash/find.js';
+import { useApi } from '../api.jsx';
 
 export const channelsSlice = createSlice({
-  name: "channels",
+  name: 'channels',
   initialState: { channels: [], activeChannelId: null },
   reducers: {
     init: (draft, { payload }) => {
-      // eslint-disable-next-line no-param-reassign
       draft.channels = payload.channels;
-      // eslint-disable-next-line no-param-reassign
       draft.activeChannelId = payload.channels[0]?.id ?? null;
     },
     addChannel: (draft, { payload }) => {
@@ -27,12 +27,10 @@ export const channelsSlice = createSlice({
     removeChannel: (draft, { payload }) => {
       remove(draft.channels, ({ id }) => id === payload.id);
       if (draft.activeChannelId === payload.id) {
-        // eslint-disable-next-line no-param-reassign
         draft.activeChannelId = draft.channels[0]?.id ?? null;
       }
     },
     activateChannel: (draft, { payload }) => {
-      // eslint-disable-next-line no-param-reassign
       draft.activeChannelId = payload;
     },
   },
@@ -48,7 +46,7 @@ export const useChannels = () => {
   const { socket } = useApi();
   const { channels, activeChannelId } = useSelector(getChannels);
   const createChannel = async ({ name }) => {
-    await socket.emitWithAcknowledge("newChannel", { name });
+    await socket.emitWithAcknowledge('newChannel', { name });
   };
 
   return {
@@ -67,16 +65,22 @@ export const useChannel = (id) => {
 
   const channel = useSelector((state) => find(state.channels.channels, id));
   const editChannel = async ({ name }) => {
-    await socket.emitWithAcknowledge("renameChannel", { id, name });
+    await socket.emitWithAcknowledge('renameChannel', { id, name });
   };
   const removeChannel = async () => {
-    await socket.emitWithAcknowledge("removeChannel", { id });
+    await socket.emitWithAcknowledge('removeChannel', { id });
   };
   const activateChannel = () => {
     dispatch(channelsSlice.actions.activateChannel(id));
   };
 
-  return { channel, isActive, editChannel, removeChannel, activateChannel };
+  return {
+    channel,
+    isActive,
+    editChannel,
+    removeChannel,
+    activateChannel,
+  };
 };
 
 export const getChannelMessages = (state, channelId) => {
@@ -105,17 +109,16 @@ export const useListeners = (socket) => {
       dispatch(removeChannel({ id: payload.id }));
     };
 
-    socket.on("newChannel", handleCreateChannel);
-    socket.on("renameChannel", handleEditChannel);
-    socket.on("removeChannel", handleRemoveChannel);
+    socket.on('newChannel', handleCreateChannel);
+    socket.on('renameChannel', handleEditChannel);
+    socket.on('removeChannel', handleRemoveChannel);
 
     return () => {
-      socket.off("newChannel", handleCreateChannel);
-      socket.off("renameChannel", handleEditChannel);
-      socket.off("removeChannel", handleRemoveChannel);
+      socket.off('newChannel', handleCreateChannel);
+      socket.off('renameChannel', handleEditChannel);
+      socket.off('removeChannel', handleRemoveChannel);
     };
   }, [socket, dispatch]);
 };
 
-// eslint-disable-next-line import/no-cycle
-export { default as Channels } from "./Channels.jsx";
+export { default as Channels } from './Channels.jsx';

@@ -1,12 +1,12 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "./screens/Home.jsx";
-import Login from "./screens/Login.jsx";
-import Signup from "./screens/Signup.jsx";
-import NotFound from "./screens/NotFound.jsx";
-import Navbar from "./components/Navbar.jsx";
-import PrivateRoute from "./components/PrivateRoute.jsx";
-import routes from "./routes.js";
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Home from './screens/Home.jsx';
+import Login from './screens/Login.jsx';
+import Signup from './screens/Signup.jsx';
+import NotFound from './screens/NotFound.jsx';
+import Navbar from './components/Navbar.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
+import routes from './routes.js';
 
 export default function App() {
   return (

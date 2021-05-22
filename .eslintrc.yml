@@ -10,13 +10,13 @@ plugins:
 extends:
   - airbnb
   - prettier
-  - "plugin:jest/recommended"
-  - "plugin:functional/external-recommended"
-  - "plugin:functional/recommended"
-  - "plugin:react/recommended"
-  - "plugin:react-hooks/recommended"
-  - "plugin:testing-library/react"
-  - "plugin:jest-dom/recommended"
+  - 'plugin:jest/recommended'
+  - 'plugin:functional/external-recommended'
+  - 'plugin:functional/recommended'
+  - 'plugin:react/recommended'
+  - 'plugin:react-hooks/recommended'
+  - 'plugin:testing-library/react'
+  - 'plugin:jest-dom/recommended'
 
 env:
   browser: true
@@ -35,5 +35,9 @@ rules:
   functional/functional-parameters: 0
   functional/no-try-statement: 0
   functional/no-throw-statement: 0
-  no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
+  no-underscore-dangle: [2, { 'allow': ['__filename', '__dirname'] }]
   testing-library/no-debug: 0
+  object-curly-newline: 1
+  implicit-arrow-linebreak: 1
+  no-confusing-arrow: 1
+  react/jsx-curly-newline: 1

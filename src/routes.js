@@ -1,6 +1,6 @@
 export default {
-  home: () => "/",
-  login: () => "/login",
-  signup: () => "/signup",
-  channels: "/channels",
+  home: () => '/',
+  login: () => '/login',
+  signup: () => '/signup',
+  channels: '/channels',
 };

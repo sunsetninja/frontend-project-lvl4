@@ -1,12 +1,12 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { Button } from "react-bootstrap";
-import { useChannels } from "./index.js";
-import Channel from "./Channel.jsx";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button } from 'react-bootstrap';
+import { useChannels } from './index.js';
+import Channel from './Channel.jsx';
 import ChannelsModal, {
   Provider as ChannelsModalProvider,
   useChannelsModal,
-} from "./ChannelsModal.jsx";
+} from './ChannelsModal.jsx';
 
 const ChannelsHeader = () => {
   const { t } = useTranslation();
@@ -14,12 +14,12 @@ const ChannelsHeader = () => {
 
   return (
     <div className="d-flex mb-2">
-      <span>{t("channels.channels")}</span>
+      <span>{t('channels.channels')}</span>
       <Button
         type="button"
         variant="link"
         className="ml-auto p-0"
-        onClick={() => modal.open({ type: "channel_create" })}
+        onClick={() => modal.open({ type: 'channel_create' })}
       >
         +
       </Button>

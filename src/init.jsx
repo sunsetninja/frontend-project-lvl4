@@ -1,27 +1,27 @@
-import React from "react";
-import { Provider as ReduxProvider } from "react-redux";
-import { I18nextProvider } from "react-i18next";
-import * as yup from "yup";
-import { ErrorBoundary } from "react-error-boundary";
-import initI18n from "./i18n.js";
-import { Provider as AuthProvider } from "./features/auth.jsx";
-import { Provider as ApiProvider } from "./features/api.jsx";
-import App from "./App.jsx";
-import createStore from "./store.js";
-import ErrorFallback from "./components/ErrorFallback.jsx";
-import { logger } from "./services/logger.js";
+import React from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
+import * as yup from 'yup';
+import { ErrorBoundary } from 'react-error-boundary';
+import initI18n from './i18n.js';
+import { Provider as AuthProvider } from './features/auth.jsx';
+import { Provider as ApiProvider } from './features/api.jsx';
+import App from './App.jsx';
+import createStore from './store.js';
+import ErrorFallback from './components/ErrorFallback.jsx';
+import { logger } from './services/logger.js';
 
 export default async (socket) => {
   const i18n = await initI18n();
   yup.setLocale({
     mixed: {
-      required: i18n.t("validation.mixed.required"),
-      uniq: i18n.t("validation.mixed.uniq"),
+      required: i18n.t('validation.mixed.required'),
+      uniq: i18n.t('validation.mixed.uniq'),
     },
     string: {
       string: {
-        min: ({ min }) => i18n.t("validation.string.min", { min }),
-        max: ({ max }) => i18n.t("validation.string.max", { max }),
+        min: ({ min }) => i18n.t('validation.string.min', { min }),
+        max: ({ max }) => i18n.t('validation.string.max', { max }),
       },
     },
   });

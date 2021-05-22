@@ -1,6 +1,6 @@
-import React from "react";
-import ChatMessageForm from "./ChatMessageForm.jsx";
-import { useChannelMessages, useChannels } from "../channels/index.js";
+import React from 'react';
+import ChatMessageForm from './ChatMessageForm.jsx';
+import { useChannelMessages, useChannels } from '../channels/index.js';
 
 function Chat() {
   const { activeChannelId } = useChannels();
@@ -12,7 +12,7 @@ function Chat() {
         {messages.map(({ id, username, text }) => (
           <div className="text-break" key={id}>
             <b>{username}</b>
-            {": "}
+            {': '}
             {text}
           </div>
         ))}

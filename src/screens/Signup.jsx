@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Formik } from "formik";
-import * as yup from "yup";
-import { Button, Form } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useAuth } from "../features/auth.jsx";
-import FormField from "../components/FormField.jsx";
+import React, { useEffect, useRef, useState } from 'react';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import { Button, Form } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../features/auth.jsx';
+import FormField from '../components/FormField.jsx';
 
 function Signup() {
   const { t } = useTranslation();
@@ -20,20 +20,20 @@ function Signup() {
 
   return (
     <Formik
-      initialValues={{ username: "", password: "", password_confirm: "" }}
+      initialValues={{ username: '', password: '', password_confirm: '' }}
       validationSchema={yup.object().shape({
         username: yup
           .string()
           .trim()
           .required()
-          .min(3, t("validation.username"))
-          .max(20, t("validation.username")),
-        password: yup.string().trim().required().min(6, t("validation.password.min")),
+          .min(3, t('validation.username'))
+          .max(20, t('validation.username')),
+        password: yup.string().trim().required().min(6, t('validation.password.min')),
         password_confirm: yup
           .string()
           .test(
-            "password_confirm",
-            t("validation.password.match"),
+            'password_confirm',
+            t('validation.password.match'),
             (value, context) => value === context.parent.password,
           ),
       })}
@@ -47,7 +47,7 @@ function Signup() {
             password: values.password,
           });
           setSubmitting(false);
-          history.replace("/");
+          history.replace('/');
         } catch (error) {
           setSubmitting(false);
           if (error?.response?.status === 409) {
@@ -65,22 +65,22 @@ function Signup() {
               <Form onSubmit={props.handleSubmit} className="p-3">
                 <FormField
                   name="username"
-                  label={t("signup.username")}
+                  label={t('signup.username')}
                   ref={usernameInputRef}
                   isInvalid={signupFailed}
-                  error={signupFailed ? t("signup.alreadyExists") : null}
+                  error={signupFailed ? t('signup.alreadyExists') : null}
                   required
                 />
                 <FormField
                   name="password"
-                  label={t("signup.password")}
+                  label={t('signup.password')}
                   isInvalid={signupFailed}
                   type="password"
                   required
                 />
                 <FormField
                   name="password_confirm"
-                  label={t("signup.passwordConfirm")}
+                  label={t('signup.passwordConfirm')}
                   isInvalid={signupFailed}
                   type="password"
                   required
@@ -91,7 +91,7 @@ function Signup() {
                   className="w-100 mb-3"
                   disabled={props.isSubmitting}
                 >
-                  {t("signup.submit")}
+                  {t('signup.submit')}
                 </Button>
               </Form>
             </div>

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { Spinner } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { useAuth } from "../features/auth.jsx";
-import { endpoints } from "../features/api.jsx";
-import { actions as channelActions, Channels } from "../features/channels/index.js";
-import { actions as chatActions, Chat } from "../features/chat/index.js";
-import routes from "../routes.js";
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../features/auth.jsx';
+import { endpoints } from '../features/api.jsx';
+import { actions as channelActions, Channels } from '../features/channels/index.js';
+import { actions as chatActions, Chat } from '../features/chat/index.js';
+import routes from '../routes.js';
 
 function Home() {
   const history = useHistory();
@@ -39,7 +39,7 @@ function Home() {
 
   return loading ? (
     <Spinner animation="grow" role="status" variant="primary">
-      <span className="sr-only">{t("loading")}</span>
+      <span className="sr-only">{t('loading')}</span>
     </Spinner>
   ) : (
     <div className="row flex-grow-1 h-75 pb-3">

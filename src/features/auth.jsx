@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
-import axios from "axios";
+import React, { useContext, useMemo, useState } from 'react';
+import axios from 'axios';
 // eslint-disable-next-line import/no-cycle
-import { endpoints } from "./api.jsx";
+import { endpoints } from './api.jsx';
 
-const AuthContext = createContext({
+const AuthContext = React.createContext({
   user: null,
   logIn: () => {},
   logOut: () => {},
@@ -13,7 +13,7 @@ export const useAuth = () => useContext(AuthContext);
 
 const getSavedUser = () => {
   try {
-    return JSON.parse(localStorage.getItem("user"));
+    return JSON.parse(localStorage.getItem('user'));
   } catch (error) {
     console.error(error);
     return null;
@@ -24,11 +24,14 @@ export const Provider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(getSavedUser());
 
   const value = useMemo(() => {
-    const getAuthHeader = () =>
-      currentUser?.token ? { Authorization: `Bearer ${currentUser.token}` } : {};
+    const getAuthHeader = () => {
+      const token = currentUser?.token;
+
+      return token ? { Authorization: `Bearer ${token}` } : {};
+    };
 
     const request = (configOrUrl = {}) => {
-      const config = typeof configOrUrl === "string" ? { url: configOrUrl } : configOrUrl;
+      const config = typeof configOrUrl === 'string' ? { url: configOrUrl } : configOrUrl;
 
       return axios({
         ...config,
@@ -41,7 +44,7 @@ export const Provider = ({ children }) => {
         username,
         password,
       });
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
       setCurrentUser(user);
     };
     const signUp = async ({ username, password }) => {
@@ -49,15 +52,21 @@ export const Provider = ({ children }) => {
         username,
         password,
       });
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
       setCurrentUser(user);
     };
     const logOut = () => {
-      localStorage.removeItem("user");
+      localStorage.removeItem('user');
       setCurrentUser(null);
     };
 
-    return { user: currentUser, logIn, signUp, logOut, request };
+    return {
+      user: currentUser,
+      logIn,
+      signUp,
+      logOut,
+      request,
+    };
   }, [currentUser]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

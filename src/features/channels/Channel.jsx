@@ -1,15 +1,15 @@
-import { useTranslation } from "react-i18next";
-import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
-import React from "react";
-import { useChannel } from "./index.js";
-import { useChannelsModal } from "./ChannelsModal.jsx";
+import { useTranslation } from 'react-i18next';
+import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
+import React from 'react';
+import { useChannel } from './index.js';
+import { useChannelsModal } from './ChannelsModal.jsx';
 
 const Channel = ({ channel }) => {
   const { t } = useTranslation();
   const { activateChannel, isActive } = useChannel(channel.id);
   const modal = useChannelsModal();
 
-  const variant = isActive ? "primary" : "light";
+  const variant = isActive ? 'primary' : 'light';
 
   const ChannelButton = (
     <Button
@@ -18,7 +18,7 @@ const Channel = ({ channel }) => {
       className="text-left flex-grow-1 nav-link"
       onClick={activateChannel}
       variant={variant}
-      style={{ width: "100%" }}
+      style={{ width: '100%' }}
     >
       {channel.name}
     </Button>
@@ -34,22 +34,22 @@ const Channel = ({ channel }) => {
             <Dropdown.Item
               onClick={() => {
                 modal.open({
-                  type: "channel_edit",
+                  type: 'channel_edit',
                   data: { channelId: channel.id },
                 });
               }}
             >
-              {t("channels.rename")}
-            </Dropdown.Item>{" "}
+              {t('channels.rename')}
+            </Dropdown.Item>
             <Dropdown.Item
               onClick={() => {
                 modal.open({
-                  type: "channel_remove",
+                  type: 'channel_remove',
                   data: { channelId: channel.id },
                 });
               }}
             >
-              {t("channels.remove")}
+              {t('channels.remove')}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

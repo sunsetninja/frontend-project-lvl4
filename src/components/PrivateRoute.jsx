@@ -1,7 +1,7 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import { useAuth } from "../features/auth.jsx";
-import routes from "../routes.js";
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { useAuth } from '../features/auth.jsx';
+import routes from '../routes.js';
 
 const PrivateRoute = ({ component, ...props }) => {
   const { user } = useAuth();
@@ -11,13 +11,14 @@ const PrivateRoute = ({ component, ...props }) => {
     <Route
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
-      render={({ location }) =>
-        user ? (
+      render={({ location }) => {
+        const to = { pathname: routes.login(), state: { from: location } };
+        return user ? (
           <Component />
         ) : (
-          <Redirect to={{ pathname: routes.login(), state: { from: location } }} />
-        )
-      }
+          <Redirect to={to} />
+        );
+      }}
     />
   );
 };

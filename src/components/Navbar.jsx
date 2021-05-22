@@ -1,8 +1,8 @@
-import React from "react";
-import { Button, Navbar as BsNavbar } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { useAuth } from "../features/auth.jsx";
+import React from 'react';
+import { Button, Navbar as BsNavbar } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../features/auth.jsx';
 
 function Navbar() {
   const { logOut, user } = useAuth();
@@ -10,9 +10,9 @@ function Navbar() {
   return (
     <BsNavbar bg="light" expand="lg" className="mb-3">
       <BsNavbar.Brand as={Link} to="/" className="mr-auto">
-        {t("hexletChat")}
+        {t('hexletChat')}
       </BsNavbar.Brand>
-      {user && <Button onClick={logOut}>{t("logout")}</Button>}
+      {user && <Button onClick={logOut}>{t('logout')}</Button>}
     </BsNavbar>
   );
 }

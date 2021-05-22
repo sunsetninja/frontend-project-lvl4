@@ -1,7 +1,7 @@
-import Rollbar from "rollbar";
+import Rollbar from 'rollbar';
 
 const logger = new Rollbar({
-  enabled: process.env.NODE_ENV === "production",
+  enabled: process.env.NODE_ENV === 'production',
   accessToken: process.env.LOGGER_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,

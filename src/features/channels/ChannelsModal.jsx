@@ -1,19 +1,18 @@
-import React, { useEffect, useRef, createContext, useContext, useMemo, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState, useMemo } from 'react';
+import { Button, Form, Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import property from 'lodash/property.js';
+import * as yup from 'yup';
+import { Formik } from 'formik';
+import { useChannel, useChannels } from './index.js';
 
-import property from "lodash/property.js";
-import * as yup from "yup";
-import { Formik } from "formik";
-import { useChannel, useChannels } from "./index.js";
-
-const ChannelsModalContext = createContext({
+const ChannelsModalContext = React.createContext({
   info: { type: null, data: null },
   open: () => {},
   close: () => {},
 });
 
-export const useChannelsModal = () => useContext(ChannelsModalContext);
+export const useChannelsModal = () => React.useContext(ChannelsModalContext);
 
 export const Provider = ({ children }) => {
   const [info, setInfo] = useState(null);
@@ -47,10 +46,10 @@ const ChannelRemoveForm = () => {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modals.remove")}</Modal.Title>
+        <Modal.Title>{t('modals.remove')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {t("modals.confirmation")}
+        {t('modals.confirmation')}
         <div className="d-flex justify-content-between">
           <Button
             className="mr-2"
@@ -59,10 +58,10 @@ const ChannelRemoveForm = () => {
             onClick={modal.close}
             disabled={loading}
           >
-            {t("modals.cancel")}
+            {t('modals.cancel')}
           </Button>
           <Button variant="danger" type="button" onClick={handleRemove} disabled={loading}>
-            {t("modals.confirm")}
+            {t('modals.confirm')}
           </Button>
         </div>
       </Modal.Body>
@@ -70,19 +69,22 @@ const ChannelRemoveForm = () => {
   );
 };
 
-const getValidationSchema = (channels) =>
-  yup.object().shape({
+const getValidationSchema = (channels) => {
+  const schema = yup.object().shape({
     name: yup
       .string()
       .trim()
-      .required("modals.required")
-      .min(3, "modals.min")
-      .max(20, "modals.max")
-      .notOneOf(channels, "modals.uniq"),
+      .required('modals.required')
+      .min(3, 'modals.min')
+      .max(20, 'modals.max')
+      .notOneOf(channels, 'modals.uniq'),
   });
 
+  return schema;
+};
+
 const ChannelCreateForm = () => {
-  const inputRef = useRef(null);
+  const inputRef = React.useRef(null);
   const { t } = useTranslation();
   const { channels, createChannel } = useChannels();
   const modal = useChannelsModal();
@@ -94,12 +96,12 @@ const ChannelCreateForm = () => {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modals.add")}</Modal.Title>
+        <Modal.Title>{t('modals.add')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Formik
-          initialValues={{ name: "" }}
-          validationSchema={getValidationSchema(channels.map(property("name")))}
+          initialValues={{ name: '' }}
+          validationSchema={getValidationSchema(channels.map(property('name')))}
           validateOnBlur={false}
           validateOnChange={false}
           onSubmit={async ({ name }, { setSubmitting }) => {
@@ -131,10 +133,10 @@ const ChannelCreateForm = () => {
                 <Form.Control.Feedback type="invalid">{t(props.errors.name)}</Form.Control.Feedback>
                 <div className="d-flex justify-content-end">
                   <Button className="mr-2" variant="secondary" type="button" onClick={modal.close}>
-                    {t("modals.cancel")}
+                    {t('modals.cancel')}
                   </Button>
                   <Button variant="primary" type="submit" disabled={props.isSubmitting}>
-                    {t("modals.submit")}
+                    {t('modals.submit')}
                   </Button>
                 </div>
               </Form.Group>
@@ -147,7 +149,7 @@ const ChannelCreateForm = () => {
 };
 
 const ChannelEditForm = () => {
-  const inputRef = useRef(null);
+  const inputRef = React.useRef(null);
   const { t } = useTranslation();
   const { channels } = useChannels();
   const modal = useChannelsModal();
@@ -160,12 +162,12 @@ const ChannelEditForm = () => {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modals.add")}</Modal.Title>
+        <Modal.Title>{t('modals.add')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Formik
           initialValues={{ name: channel.name }}
-          validationSchema={getValidationSchema(channels.map(property("name")))}
+          validationSchema={getValidationSchema(channels.map(property('name')))}
           validateOnBlur={false}
           validateOnChange={false}
           onSubmit={async ({ name }, { setSubmitting }) => {
@@ -197,10 +199,10 @@ const ChannelEditForm = () => {
                 <Form.Control.Feedback type="invalid">{t(props.errors.name)}</Form.Control.Feedback>
                 <div className="d-flex justify-content-end">
                   <Button className="mr-2" variant="secondary" type="button" onClick={modal.close}>
-                    {t("modals.cancel")}
+                    {t('modals.cancel')}
                   </Button>
                   <Button variant="primary" type="submit" disabled={props.isSubmitting}>
-                    {t("modals.submit")}
+                    {t('modals.submit')}
                   </Button>
                 </div>
               </Form.Group>
