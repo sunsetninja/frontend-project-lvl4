@@ -1,14 +1,14 @@
 import React from "react";
-import initI18n from "./i18n.js";
 import { Provider as ReduxProvider } from "react-redux";
 import { I18nextProvider } from "react-i18next";
-import { Provider as AuthProvider } from "./features/auth.js";
-import { Provider as ApiProvider } from "./features/api.js";
-import App from "./App.js";
-import createStore from "./store.js";
 import * as yup from "yup";
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallback from "./components/ErrorFallback.js";
+import initI18n from "./i18n.js";
+import { Provider as AuthProvider } from "./features/auth.jsx";
+import { Provider as ApiProvider } from "./features/api.jsx";
+import App from "./App.jsx";
+import createStore from "./store.js";
+import ErrorFallback from "./components/ErrorFallback.jsx";
 import { logger } from "./services/logger.js";
 
 export default async (socket) => {

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useChat } from "./index.js";
 import { Formik } from "formik";
+import { useChat } from "./index.js";
 import { useChannels } from "../channels/index.js";
 
-const ChatMessageForm = () => {
+function ChatMessageForm() {
   const { t } = useTranslation();
   const { createMessage } = useChat();
   const { activeChannelId } = useChannels();
@@ -24,29 +24,27 @@ const ChatMessageForm = () => {
         textInputRef.current.focus();
       }}
     >
-      {(props) => {
-        return (
-          <Form onSubmit={props.handleSubmit}>
-            <InputGroup>
-              <Form.Control
-                name="text"
-                aria-label="text"
-                value={props.values.text}
-                onChange={props.handleChange}
-                ref={textInputRef}
-                data-testid="new-message"
-              />
-              <InputGroup.Append>
-                <Button variant="primary" type="submit">
-                  {t("chat.send")}
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
-        );
-      }}
+      {(props) => (
+        <Form onSubmit={props.handleSubmit}>
+          <InputGroup>
+            <Form.Control
+              name="text"
+              aria-label="text"
+              value={props.values.text}
+              onChange={props.handleChange}
+              ref={textInputRef}
+              data-testid="new-message"
+            />
+            <InputGroup.Append>
+              <Button variant="primary" type="submit">
+                {t("chat.send")}
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </Form>
+      )}
     </Formik>
   );
-};
+}
 
 export default ChatMessageForm;

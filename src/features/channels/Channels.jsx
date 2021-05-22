@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { useChannels } from "./index.js";
 import { Button } from "react-bootstrap";
-import Channel from "./Channel.js";
+import { useChannels } from "./index.js";
+import Channel from "./Channel.jsx";
 import ChannelsModal, {
   Provider as ChannelsModalProvider,
   useChannelsModal,
-} from "./ChannelsModal.js";
+} from "./ChannelsModal.jsx";
 
 const ChannelsHeader = () => {
   const { t } = useTranslation();

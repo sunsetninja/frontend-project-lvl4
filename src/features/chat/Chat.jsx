@@ -1,8 +1,8 @@
 import React from "react";
-import ChatMessageForm from "./ChatMessageForm.js";
+import ChatMessageForm from "./ChatMessageForm.jsx";
 import { useChannelMessages, useChannels } from "../channels/index.js";
 
-const Chat = () => {
+function Chat() {
   const { activeChannelId } = useChannels();
   const messages = useChannelMessages(activeChannelId);
 
@@ -22,6 +22,6 @@ const Chat = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Chat;

@@ -2,9 +2,9 @@ import React from "react";
 import { Button, Navbar as BsNavbar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { useAuth } from "../features/auth.js";
+import { useAuth } from "../features/auth.jsx";
 
-const Navbar = () => {
+function Navbar() {
   const { logOut, user } = useAuth();
   const { t } = useTranslation();
   return (
@@ -15,6 +15,6 @@ const Navbar = () => {
       {user && <Button onClick={logOut}>{t("logout")}</Button>}
     </BsNavbar>
   );
-};
+}
 
 export default Navbar;

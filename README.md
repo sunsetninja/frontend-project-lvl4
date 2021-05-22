@@ -2,21 +2,27 @@
 
 ## App
 
-https://mysterious-refuge-35366.herokuapp.com
+<https://mysterious-refuge-35366.herokuapp.com>
 
 ## Requirements
 
-* [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+- [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 
 ## Install
 
 ```sh
-$ make install
+make install
 ```
 
 ## Run
 
 ```sh
-$ make start
+make start
 # open http://localhost:5000
+```
+
+## test
+
+```sh
+make test
 ```

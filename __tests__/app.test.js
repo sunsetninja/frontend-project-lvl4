@@ -8,7 +8,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import MockedSocket from "socket.io-mock";
 
-import init from "../src/init.js";
+import init from "../src/init.jsx";
 
 const server = setupServer();
 let socket; // eslint-disable-line
@@ -85,26 +85,17 @@ describe("auth", () => {
   });
 
   test("handle login error", async () => {
-    server.use(
-      rest.post("/api/v1/login", (_req, res, ctx) => res(ctx.status(401)))
-    );
-    expect(
-      screen.queryByText(/Неверные имя пользователя или пароль/i)
-    ).not.toBeInTheDocument();
+    server.use(rest.post("/api/v1/login", (_req, res, ctx) => res(ctx.status(401))));
+    expect(screen.queryByText(/Неверные имя пользователя или пароль/i)).not.toBeInTheDocument();
     userEvent.type(await screen.findByLabelText(/Ваш ник/i), "guest");
     userEvent.type(await screen.findByLabelText(/Пароль/i), "pass");
     userEvent.click(await screen.findByRole("button", { name: /Войти/i }));
 
-    expect(
-      await screen.findByText(/Неверные имя пользователя или пароль/i)
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/Неверные имя пользователя или пароль/i)).toBeInTheDocument();
   });
 
   test("successful login", async () => {
-    server.use(
-      rest.post("/api/v1/login", mockSingin),
-      rest.get("/api/v1/data", mockInitialData)
-    );
+    server.use(rest.post("/api/v1/login", mockSingin), rest.get("/api/v1/data", mockInitialData));
 
     userEvent.type(await screen.findByLabelText(/Ваш ник/i), "user");
     userEvent.type(await screen.findByLabelText(/Пароль/i), "pass");
@@ -118,10 +109,7 @@ describe("auth", () => {
 
 describe("registration", () => {
   test("handle new user creation", async () => {
-    server.use(
-      rest.post("/api/v1/signup", mockSignup),
-      rest.get("/api/v1/data", mockInitialData)
-    );
+    server.use(rest.post("/api/v1/signup", mockSignup), rest.get("/api/v1/data", mockInitialData));
 
     userEvent.click(await screen.findByRole("link", { name: /Регистрация/i }));
     expect(true).toBe(true);
@@ -130,13 +118,8 @@ describe("registration", () => {
     });
     userEvent.type(await screen.findByLabelText(/Имя пользователя/i), "user");
     userEvent.type(await screen.findByLabelText(/^Пароль$/i), "password");
-    userEvent.type(
-      await screen.findByLabelText(/Подтвердите пароль/i),
-      "password"
-    );
-    userEvent.click(
-      await screen.findByRole("button", { name: /Зарегистрироваться/i })
-    );
+    userEvent.type(await screen.findByLabelText(/Подтвердите пароль/i), "password");
+    userEvent.click(await screen.findByRole("button", { name: /Зарегистрироваться/i }));
     await waitFor(() => {
       expect(window.location.pathname).toBe("/");
     });
@@ -149,13 +132,8 @@ describe("registration", () => {
     });
     userEvent.type(await screen.findByLabelText(/Имя пользователя/i), "u");
     userEvent.type(await screen.findByLabelText(/^Пароль$/i), "pass");
-    userEvent.type(
-      await screen.findByLabelText(/Подтвердите пароль/i),
-      "passw"
-    );
-    userEvent.click(
-      await screen.findByRole("button", { name: /Зарегистрироваться/i })
-    );
+    userEvent.type(await screen.findByLabelText(/Подтвердите пароль/i), "passw");
+    userEvent.click(await screen.findByRole("button", { name: /Зарегистрироваться/i }));
     expect(await screen.findByText(/От 3 до 20 символов/i)).toBeVisible();
     expect(await screen.findByText(/Не менее 6 символов/i)).toBeVisible();
     expect(await screen.findByText(/Пароли должны совпадать/i)).toBeVisible();
@@ -164,10 +142,7 @@ describe("registration", () => {
 
 describe("chat", () => {
   beforeEach(async () => {
-    server.use(
-      rest.post("/api/v1/login", mockSingin),
-      rest.get("/api/v1/data", mockInitialData)
-    );
+    server.use(rest.post("/api/v1/login", mockSingin), rest.get("/api/v1/data", mockInitialData));
     userEvent.type(await screen.findByLabelText(/Ваш ник/i), "user");
     userEvent.type(await screen.findByLabelText(/Пароль/i), "pass");
     userEvent.click(await screen.findByRole("button", { name: /Войти/i }));
@@ -181,18 +156,12 @@ describe("chat", () => {
   });
 
   test("different channels", async () => {
-    userEvent.type(
-      await screen.findByTestId("new-message"),
-      "message for general"
-    );
+    userEvent.type(await screen.findByTestId("new-message"), "message for general");
     userEvent.click(await screen.findByRole("button", { name: /Отправить/i }));
     expect(await screen.findByText(/message for general/i)).toBeInTheDocument();
     userEvent.click(await screen.findByRole("button", { name: /random/i }));
     expect(screen.queryByText(/message for general/i)).not.toBeInTheDocument();
-    userEvent.type(
-      await screen.findByTestId("new-message"),
-      "message for random"
-    );
+    userEvent.type(await screen.findByTestId("new-message"), "message for random");
     userEvent.click(await screen.findByRole("button", { name: /Отправить/i }));
     expect(await screen.findByText(/message for random/i)).toBeInTheDocument();
   });
@@ -201,8 +170,6 @@ describe("chat", () => {
     userEvent.click(await screen.findByRole("button", { name: "+" }));
     userEvent.type(await screen.findByTestId("add-channel"), "test channel");
     userEvent.click(await screen.findByRole("button", { name: /Отправить/i }));
-    expect(
-      await screen.findByRole("button", { name: /test channel/i })
-    ).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: /test channel/i })).toBeInTheDocument();
   });
 });

@@ -1,35 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import routes from "../routes.js";
-import { useAuth } from "../features/auth.js";
 import { useDispatch } from "react-redux";
-import { init as initChannels, Channels } from "../features/channels/index.js";
 import { Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { init as initChat, Chat } from "../features/chat/index.js";
+import routes from "../routes.js";
+import { useAuth } from "../features/auth.jsx";
+import { actions as channelActions, Channels } from "../features/channels/index.js";
+import { actions as chatActions, Chat } from "../features/chat/index.js";
 
-export default () => {
+function Home() {
   const history = useHistory();
   const auth = useAuth();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
-  useEffect(async () => {
-    try {
-      setLoading(true);
-      const { data } = await auth.request(routes.dataPath());
-      dispatch(initChannels({ channels: data.channels }));
-      dispatch(initChat({ messages: data.messages }));
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      if (error?.response?.status === 401) {
-        history.replace("/login");
-        return;
+  useEffect(() => {
+    const initApp = async () => {
+      try {
+        setLoading(true);
+        const { data } = await auth.request(routes.dataPath());
+        dispatch(channelActions.init({ channels: data.channels }));
+        dispatch(chatActions.init({ messages: data.messages }));
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+
+        if (error?.response?.status === 401) {
+          history.replace("/login");
+          return;
+        }
+        throw error;
       }
-      throw error;
-    }
+    };
+    initApp();
   }, [history, dispatch, setLoading, auth]);
 
   return loading ? (
@@ -46,4 +50,6 @@ export default () => {
       </div>
     </div>
   );
-};
+}
+
+export default Home;

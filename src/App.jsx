@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "./screens/Home.js";
-import Login from "./screens/Login.js";
-import Signup from "./screens/Signup.js";
-import NotFound from "./screens/NotFound.js";
-import Navbar from "./components/Navbar.js";
-import PrivateRoute from "./components/PrivateRoute.js";
+import Home from "./screens/Home.jsx";
+import Login from "./screens/Login.jsx";
+import Signup from "./screens/Signup.jsx";
+import NotFound from "./screens/NotFound.jsx";
+import Navbar from "./components/Navbar.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
 
-export default () => {
+export default function App() {
   return (
     <Router>
       <div className="d-flex flex-column h-100">
@@ -29,4 +29,4 @@ export default () => {
       </div>
     </Router>
   );
-};
+}

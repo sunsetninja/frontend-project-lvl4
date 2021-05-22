@@ -1,7 +1,6 @@
 import React from "react";
-import { useAuth } from "../features/auth.js";
 import { Route, Redirect } from "react-router-dom";
-import routes from "../routes.js";
+import { useAuth } from "../features/auth.jsx";
 
 const PrivateRoute = ({ children, ...props }) => {
   const { user } = useAuth();
@@ -11,11 +10,7 @@ const PrivateRoute = ({ children, ...props }) => {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       render={({ location }) =>
-        user ? (
-          children
-        ) : (
-          <Redirect to={{ pathname: "/login", state: { from: location } }} />
-        )
+        user ? children : <Redirect to={{ pathname: "/login", state: { from: location } }} />
       }
     />
   );

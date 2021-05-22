@@ -1,16 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useApi } from "../api.js";
-import { useChannels, removeChannel } from "../channels/index.js";
-import { useAuth } from "../auth.js";
 import remove from "lodash/remove.js";
+// eslint-disable-next-line import/no-cycle
+import { useApi } from "../api.jsx";
+// eslint-disable-next-line import/no-cycle
+import { useChannels, actions as channelActions } from "../channels/index.js";
+import { useAuth } from "../auth.jsx";
 
 export const chatSlice = createSlice({
   name: "chat",
   initialState: { messages: [] },
   reducers: {
     init: (draft, { payload }) => {
+      // eslint-disable-next-line no-param-reassign
       draft.messages = payload.messages;
     },
     addMessage: (draft, { payload }) => {
@@ -18,13 +21,13 @@ export const chatSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(removeChannel, (draft, { payload }) => {
+    builder.addCase(channelActions.removeChannel, (draft, { payload }) => {
       remove(draft.messages, (message) => message.channelId === payload.id);
     });
   },
 });
 
-export const { init } = chatSlice.actions;
+export const { actions } = chatSlice;
 
 export const getChat = ({ chat }) => chat;
 
@@ -38,30 +41,29 @@ export const useChat = () => {
   const createMessage = async ({ text }) => {
     await socket.emitWithAcknowledge("newMessage", {
       channelId: activeChannelId,
-      text: text,
+      text,
       username: user.username,
     });
   };
 
-  return {
-    createMessage,
-  };
+  return { createMessage };
 };
 
 export const useListeners = (socket) => {
   const dispatch = useDispatch();
 
-  const handleCreateMessage = (payload) => {
-    dispatch(chatSlice.actions.addMessage({ message: payload }));
-  };
-
   useEffect(() => {
+    const handleCreateMessage = (payload) => {
+      dispatch(actions.addMessage({ message: payload }));
+    };
+
     socket.on("newMessage", handleCreateMessage);
 
     return () => {
       socket.off("newMessage", handleCreateMessage);
     };
-  }, [socket]);
+  }, [socket, dispatch]);
 };
 
-export { default as Chat } from "./Chat.js";
+// eslint-disable-next-line import/no-cycle
+export { default as Chat } from "./Chat.jsx";

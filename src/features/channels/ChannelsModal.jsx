@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, createContext, useContext, useMemo, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { useChannel, useChannels } from "./index.js";
 import { useTranslation } from "react-i18next";
-import { createContext, useContext, useMemo, useState } from "react";
+
 import property from "lodash/property.js";
 import * as yup from "yup";
-import { Formik, setIn } from "formik";
+import { Formik } from "formik";
+import { useChannel, useChannels } from "./index.js";
 
 const ChannelsModalContext = createContext({
   info: { type: null, data: null },
@@ -13,28 +13,17 @@ const ChannelsModalContext = createContext({
   close: () => {},
 });
 
-export const useChannelsModal = () => {
-  return useContext(ChannelsModalContext);
-};
+export const useChannelsModal = () => useContext(ChannelsModalContext);
 
 export const Provider = ({ children }) => {
   const [info, setInfo] = useState(null);
 
-  const close = () => {
-    setInfo(null);
-  };
-
-  const value = useMemo(() => ({ info, open: setInfo, close }), [
-    info,
-    setInfo,
-    close,
-  ]);
-
-  return (
-    <ChannelsModalContext.Provider value={value}>
-      {children}
-    </ChannelsModalContext.Provider>
+  const value = useMemo(
+    () => ({ info, open: setInfo, close: () => setInfo(null) }),
+    [info, setInfo],
   );
+
+  return <ChannelsModalContext.Provider value={value}>{children}</ChannelsModalContext.Provider>;
 };
 
 const ChannelRemoveForm = () => {
@@ -57,7 +46,7 @@ const ChannelRemoveForm = () => {
 
   return (
     <>
-      <Modal.Header closeButton={true}>
+      <Modal.Header closeButton>
         <Modal.Title>{t("modals.remove")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -72,12 +61,7 @@ const ChannelRemoveForm = () => {
           >
             {t("modals.cancel")}
           </Button>
-          <Button
-            variant="danger"
-            type="button"
-            onClick={handleRemove}
-            disabled={loading}
-          >
+          <Button variant="danger" type="button" onClick={handleRemove} disabled={loading}>
             {t("modals.confirm")}
           </Button>
         </div>
@@ -144,23 +128,12 @@ const ChannelCreateForm = () => {
                   aria-label="add channel"
                   data-testid="add-channel"
                 />
-                <Form.Control.Feedback type="invalid">
-                  {t(props.errors.name)}
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">{t(props.errors.name)}</Form.Control.Feedback>
                 <div className="d-flex justify-content-end">
-                  <Button
-                    className="mr-2"
-                    variant="secondary"
-                    type="button"
-                    onClick={modal.close}
-                  >
+                  <Button className="mr-2" variant="secondary" type="button" onClick={modal.close}>
                     {t("modals.cancel")}
                   </Button>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    disabled={props.isSubmitting}
-                  >
+                  <Button variant="primary" type="submit" disabled={props.isSubmitting}>
                     {t("modals.submit")}
                   </Button>
                 </div>
@@ -221,23 +194,12 @@ const ChannelEditForm = () => {
                   aria-label="edit channel"
                   data-testid="edit-channel"
                 />
-                <Form.Control.Feedback type="invalid">
-                  {t(props.errors.name)}
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">{t(props.errors.name)}</Form.Control.Feedback>
                 <div className="d-flex justify-content-end">
-                  <Button
-                    className="mr-2"
-                    variant="secondary"
-                    type="button"
-                    onClick={modal.close}
-                  >
+                  <Button className="mr-2" variant="secondary" type="button" onClick={modal.close}>
                     {t("modals.cancel")}
                   </Button>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    disabled={props.isSubmitting}
-                  >
+                  <Button variant="primary" type="submit" disabled={props.isSubmitting}>
                     {t("modals.submit")}
                   </Button>
                 </div>
