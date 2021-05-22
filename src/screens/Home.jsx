@@ -3,10 +3,11 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import routes from "../routes.js";
 import { useAuth } from "../features/auth.jsx";
+import { endpoints } from "../features/api.jsx";
 import { actions as channelActions, Channels } from "../features/channels/index.js";
 import { actions as chatActions, Chat } from "../features/chat/index.js";
+import routes from "../routes.js";
 
 function Home() {
   const history = useHistory();
@@ -19,7 +20,7 @@ function Home() {
     const initApp = async () => {
       try {
         setLoading(true);
-        const { data } = await auth.request(routes.dataPath());
+        const { data } = await auth.request(endpoints.dataPath());
         dispatch(channelActions.init({ channels: data.channels }));
         dispatch(chatActions.init({ messages: data.messages }));
         setLoading(false);
@@ -27,7 +28,7 @@ function Home() {
         setLoading(false);
 
         if (error?.response?.status === 401) {
-          history.replace("/login");
+          history.replace(routes.login());
           return;
         }
         throw error;

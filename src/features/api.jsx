@@ -26,3 +26,12 @@ export const Provider = ({ children, socket }) => {
 
   return <APIContext.Provider value={{ socket }}>{children}</APIContext.Provider>;
 };
+
+const host = "";
+const prefix = "api/v1";
+
+export const endpoints = {
+  login: () => [host, prefix, "login"].join("/"),
+  signup: () => [host, prefix, "signup"].join("/"),
+  dataPath: () => [host, prefix, "data"].join("/"),
+};

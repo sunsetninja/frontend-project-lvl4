@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../features/auth.jsx";
 import FormField from "../components/FormField.jsx";
+import routes from "../routes.js";
 
 function Login() {
   const { t } = useTranslation();
@@ -70,7 +71,7 @@ function Login() {
                 </Button>
                 <div className="d-flex flex-column align-items-center">
                   <span className="small mb-2">{t("login.newToChat")}</span>{" "}
-                  <Link to="/signup">{t("login.signup")}</Link>
+                  <Link to={routes.signup()}>{t("login.signup")}</Link>
                 </div>
               </Form>
             </div>

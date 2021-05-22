@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import axios from "axios";
-import routes from "../routes.js";
+// eslint-disable-next-line import/no-cycle
+import { endpoints } from "./api.jsx";
 
 const AuthContext = createContext({
   user: null,
@@ -36,7 +37,7 @@ export const Provider = ({ children }) => {
     };
 
     const logIn = async ({ username, password }) => {
-      const { data: user } = await axios.post(routes.login(), {
+      const { data: user } = await axios.post(endpoints.login(), {
         username,
         password,
       });
@@ -44,7 +45,7 @@ export const Provider = ({ children }) => {
       setCurrentUser(user);
     };
     const signUp = async ({ username, password }) => {
-      const { data: user } = await axios.post(routes.signup(), {
+      const { data: user } = await axios.post(endpoints.signup(), {
         username,
         password,
       });
