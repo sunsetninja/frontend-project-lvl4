@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "0.0.1",
-  "description": "",
+  "description": "Simple chat app",
   "main": "src/init.jsx",
   "type": "module",
   "engines": {
