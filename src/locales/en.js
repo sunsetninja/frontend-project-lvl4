@@ -16,6 +16,9 @@ export default {
         min: 'Min 6 characters',
       },
       username: '3 to 20 characters',
+      channel: {
+        uniq: 'Channel name must be unique',
+      },
     },
     channels: {
       remove: 'Remove',
