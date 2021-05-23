@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from 'react';
 import axios from 'axios';
 // eslint-disable-next-line import/no-cycle
 import { endpoints } from './api.jsx';
+import { logger } from '../services/logger.js';
 
 const AuthContext = React.createContext({
   user: null,
@@ -15,6 +16,7 @@ const getSavedUser = () => {
   try {
     return JSON.parse(localStorage.getItem('user'));
   } catch (error) {
+    logger.warn('Cannot parse saved user', error);
     console.error(error);
     return null;
   }

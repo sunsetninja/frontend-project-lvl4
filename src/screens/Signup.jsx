@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../features/auth.jsx';
 import FormField from '../components/FormField.jsx';
+import { useLogger } from '../services/logger.js';
 
 function Signup() {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ function Signup() {
   const history = useHistory();
   const [signupFailed, setSignupFailed] = useState(false);
   const auth = useAuth();
+  const logger = useLogger();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -54,6 +56,7 @@ function Signup() {
             setSignupFailed(true);
             return;
           }
+          logger.error('Cannot signup', { values, error });
           throw error;
         }
       }}

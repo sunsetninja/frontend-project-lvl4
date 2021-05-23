@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../features/auth.jsx';
 import FormField from '../components/FormField.jsx';
 import routes from '../routes.js';
+import { useLogger } from '../services/logger.js';
 
 function Login() {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ function Login() {
   const history = useHistory();
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
+  const logger = useLogger();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -35,6 +37,7 @@ function Login() {
             setAuthFailed(true);
             return;
           }
+          logger.error('Cannot login', { values, error });
           throw error;
         }
       }}

@@ -5,6 +5,7 @@ import property from 'lodash/property.js';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { useChannel, useChannels } from './index.js';
+import { useLogger } from '../../services/logger.js';
 
 const ChannelsModalContext = React.createContext({
   info: { type: null, data: null },
@@ -30,6 +31,7 @@ const ChannelRemoveForm = () => {
   const [loading, setLoading] = useState(false);
   const modal = useChannelsModal();
   const { removeChannel } = useChannel(modal.info?.data?.channelId);
+  const logger = useLogger();
 
   const handleRemove = async () => {
     setLoading(true);
@@ -38,7 +40,8 @@ const ChannelRemoveForm = () => {
       await removeChannel();
       setLoading(false);
       modal.close();
-    } catch (e) {
+    } catch (error) {
+      logger.error('Cannot remove channel', error);
       setLoading(false);
     }
   };
@@ -88,6 +91,7 @@ const ChannelCreateForm = () => {
   const { t } = useTranslation();
   const { channels, createChannel } = useChannels();
   const modal = useChannelsModal();
+  const logger = useLogger();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -108,7 +112,8 @@ const ChannelCreateForm = () => {
             try {
               await createChannel({ name });
               modal.close();
-            } catch (e) {
+            } catch (error) {
+              logger.error('Cannot create channel', error);
               setSubmitting(false);
 
               inputRef.current.select();
@@ -154,6 +159,7 @@ const ChannelEditForm = () => {
   const { channels } = useChannels();
   const modal = useChannelsModal();
   const { channel, editChannel } = useChannel(modal.info?.data?.channelId);
+  const logger = useLogger();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -174,7 +180,8 @@ const ChannelEditForm = () => {
             try {
               await editChannel({ name });
               modal.close();
-            } catch (e) {
+            } catch (error) {
+              logger.error('Cannot edit channel', error);
               setSubmitting(false);
 
               inputRef.current.select();

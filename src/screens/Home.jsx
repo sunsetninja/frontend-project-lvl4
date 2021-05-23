@@ -8,6 +8,7 @@ import { endpoints } from '../features/api.jsx';
 import { actions as channelActions, Channels } from '../features/channels/index.js';
 import { actions as chatActions, Chat } from '../features/chat/index.js';
 import routes from '../routes.js';
+import { useLogger } from '../services/logger.js';
 
 function Home() {
   const history = useHistory();
@@ -15,6 +16,7 @@ function Home() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const logger = useLogger();
 
   useEffect(() => {
     const initApp = async () => {
@@ -31,11 +33,12 @@ function Home() {
           history.replace(routes.login());
           return;
         }
+        logger.error('Cannot fetch initial data', error);
         throw error;
       }
     };
     initApp();
-  }, [history, dispatch, setLoading, auth]);
+  }, [history, dispatch, setLoading, auth, logger]);
 
   return loading ? (
     <Spinner animation="grow" role="status" variant="primary">
