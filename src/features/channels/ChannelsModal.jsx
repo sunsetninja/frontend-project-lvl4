@@ -74,13 +74,7 @@ const ChannelRemoveForm = () => {
 
 const getValidationSchema = (channels) => {
   const schema = yup.object().shape({
-    name: yup
-      .string()
-      .trim()
-      .required('modals.required')
-      .min(3, 'modals.min')
-      .max(20, 'modals.max')
-      .notOneOf(channels, 'modals.uniq'),
+    name: yup.string().trim().required().min(3).max(20).notOneOf(channels),
   });
 
   return schema;

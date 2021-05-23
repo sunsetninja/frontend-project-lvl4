@@ -5,7 +5,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import remove from 'lodash/remove.js';
-import find from 'lodash/find.js';
 import { useApi } from '../api.jsx';
 
 export const channelsSlice = createSlice({
@@ -21,7 +20,7 @@ export const channelsSlice = createSlice({
     },
     editChannel: (draft, { payload }) => {
       const { id } = payload.channel;
-      const channel = find(draft.channels, id);
+      const channel = draft.channels.find((c) => c.id === id);
       channel.name = payload.channel.name;
     },
     removeChannel: (draft, { payload }) => {
@@ -63,7 +62,7 @@ export const useChannel = (id) => {
 
   const isActive = activeChannelId === id;
 
-  const channel = useSelector((state) => find(state.channels.channels, id));
+  const channel = useSelector((state) => state.channels.channels.find((c) => c.id === id));
   const editChannel = async ({ name }) => {
     await socket.emitWithAcknowledge('renameChannel', { id, name });
   };

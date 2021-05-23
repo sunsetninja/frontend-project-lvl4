@@ -178,4 +178,34 @@ describe('chat', () => {
     userEvent.click(await screen.findByRole('button', { name: /Отправить/i }));
     expect(await screen.findByRole('button', { name: /test channel/i })).toBeInTheDocument();
   });
+
+  test('removing channel', async () => {
+    const channelName = 'test channel';
+    userEvent.click(await screen.findByRole('button', { name: '+' }));
+    userEvent.type(await screen.findByTestId('add-channel'), channelName);
+    userEvent.click(await screen.findByRole('button', { name: /Отправить/i }));
+
+    userEvent.click(await screen.findByTestId(`channel-${channelName}-actions`));
+    userEvent.click(await screen.findByTestId(`channel-${channelName}-remove`));
+    userEvent.click(await screen.findByRole('button', { name: /Удалить/i }));
+
+    expect(screen.queryByRole('button', { name: /test channel/i })).not.toBeInTheDocument();
+  });
+
+  test('editting channel', async () => {
+    const channelName = 'test channel';
+    const newChannelName = 'test channel new';
+    userEvent.click(await screen.findByRole('button', { name: '+' }));
+    userEvent.type(await screen.findByTestId('add-channel'), channelName);
+    userEvent.click(await screen.findByRole('button', { name: /Отправить/i }));
+
+    userEvent.click(await screen.findByTestId(`channel-${channelName}-actions`));
+    userEvent.click(await screen.findByTestId(`channel-${channelName}-edit`));
+    userEvent.clear(await screen.findByTestId('edit-channel'));
+    userEvent.type(await screen.findByTestId('edit-channel'), newChannelName);
+    userEvent.click(await screen.findByRole('button', { name: /Отправить/i }));
+
+    expect(screen.queryByRole('button', { name: /test channel$/i })).not.toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: /test channel new/i })).toBeInTheDocument();
+  });
 });

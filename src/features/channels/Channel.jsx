@@ -29,9 +29,15 @@ const Channel = ({ channel }) => {
       {channel.removable ? (
         <Dropdown as={ButtonGroup} className="d-flex mb-2">
           {ChannelButton}
-          <Dropdown.Toggle split className="flex-grow-0" variant={variant} />
+          <Dropdown.Toggle
+            split
+            className="flex-grow-0"
+            variant={variant}
+            data-testid={`channel-${channel.name}-actions`}
+          />
           <Dropdown.Menu>
             <Dropdown.Item
+              data-testid={`channel-${channel.name}-edit`}
               onClick={() => {
                 modal.open({
                   type: 'channel_edit',
@@ -42,6 +48,7 @@ const Channel = ({ channel }) => {
               {t('channels.rename')}
             </Dropdown.Item>
             <Dropdown.Item
+              data-testid={`channel-${channel.name}-remove`}
               onClick={() => {
                 modal.open({
                   type: 'channel_remove',
