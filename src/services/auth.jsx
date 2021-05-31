@@ -1,8 +1,7 @@
 import React, { useContext, useMemo, useState } from 'react';
 import axios from 'axios';
-// eslint-disable-next-line import/no-cycle
 import { endpoints } from './api.jsx';
-import { logger } from '../services/logger.js';
+import { logger } from './logger.js';
 
 const AuthContext = React.createContext({
   user: null,

@@ -3,10 +3,10 @@ import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../features/auth.jsx';
+import { useAuth } from '../services/auth.jsx';
+import { useLogger } from '../services/logger.js';
 import FormField from '../components/FormField.jsx';
 import routes from '../routes.js';
-import { useLogger } from '../services/logger.js';
 
 function Login() {
   const { t } = useTranslation();
@@ -73,9 +73,7 @@ function Login() {
                   {t('login.submit')}
                 </Button>
                 <div className="d-flex flex-column align-items-center">
-                  <span className="small mb-2">
-                    {t('login.newToChat')}
-                  </span>
+                  <span className="small mb-2">{t('login.newToChat')}</span>
                   <Link to={routes.signup()}>{t('login.signup')}</Link>
                 </div>
               </Form>

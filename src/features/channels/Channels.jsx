@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
-import { useChannels } from './index.js';
+import { useChannels } from './slice.js';
 import Channel from './Channel.jsx';
 import ChannelsModal, {
   Provider as ChannelsModalProvider,

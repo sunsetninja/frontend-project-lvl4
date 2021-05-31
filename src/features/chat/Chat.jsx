@@ -1,6 +1,6 @@
 import React from 'react';
 import ChatMessageForm from './ChatMessageForm.jsx';
-import { useChannelMessages, useChannels } from '../channels/index.js';
+import { useChannelMessages, useChannels } from '../channels/slice.js';
 
 function Chat() {
   const { activeChannelId } = useChannels();

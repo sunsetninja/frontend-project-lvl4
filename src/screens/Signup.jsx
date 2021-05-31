@@ -4,9 +4,9 @@ import * as yup from 'yup';
 import { Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../features/auth.jsx';
-import FormField from '../components/FormField.jsx';
+import { useAuth } from '../services/auth.jsx';
 import { useLogger } from '../services/logger.js';
+import FormField from '../components/FormField.jsx';
 
 function Signup() {
   const { t } = useTranslation();
@@ -73,6 +73,10 @@ function Signup() {
                   isInvalid={signupFailed}
                   error={signupFailed ? t('signup.alreadyExists') : null}
                   required
+                  autoComplete="username"
+                  onChange={() => {
+                    setSignupFailed(false);
+                  }}
                 />
                 <FormField
                   name="password"
@@ -80,6 +84,7 @@ function Signup() {
                   isInvalid={signupFailed}
                   type="password"
                   required
+                  autoComplete="new-password"
                 />
                 <FormField
                   name="password_confirm"
@@ -87,6 +92,7 @@ function Signup() {
                   isInvalid={signupFailed}
                   type="password"
                   required
+                  autoComplete="new-password"
                 />
                 <Button
                   type="submit"

@@ -1,9 +1,4 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable no-param-reassign */
-
 import React, { createContext, useContext } from 'react';
-import { useListeners as useChannelsListeners } from './channels/index.js';
-import { useListeners as useChatListeners } from './chat/index.js';
 
 const APIContext = createContext({ socket: null });
 
@@ -34,14 +29,14 @@ const withAcknowledgement = (socketFunc) => (...args) => new Promise((resolve, r
 });
 
 export const Provider = ({ children, socket }) => {
-  useChannelsListeners(socket);
-  useChatListeners(socket);
+  const api = {
+    createChannel: withAcknowledgement((...args) => socket.emit('newChannel', ...args)),
+    editChannel: withAcknowledgement((...args) => socket.emit('renameChannel', ...args)),
+    removeChannel: withAcknowledgement((...args) => socket.emit('removeChannel', ...args)),
+    createMessage: withAcknowledgement((...args) => socket.emit('newMessage', ...args)),
+  };
 
-  socket.emitWithAcknowledge = withAcknowledgement((...args) => {
-    socket.emit(...args);
-  });
-
-  return <APIContext.Provider value={{ socket }}>{children}</APIContext.Provider>;
+  return <APIContext.Provider value={api}>{children}</APIContext.Provider>;
 };
 
 const host = '';

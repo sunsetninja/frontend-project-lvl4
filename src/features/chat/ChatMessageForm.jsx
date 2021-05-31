@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
-import { useChat } from './index.js';
+import { useChat } from './slice.js';
 import { useChannels } from '../channels/index.js';
 
 function ChatMessageForm() {

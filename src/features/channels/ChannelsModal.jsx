@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import property from 'lodash/property.js';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { useChannel, useChannels } from './index.js';
+import { useChannel, useChannels } from './slice.js';
 import { useLogger } from '../../services/logger.js';
 
 const ChannelsModalContext = React.createContext({
@@ -163,6 +163,7 @@ const ChannelEditForm = () => {
 
   useEffect(() => {
     inputRef.current.focus();
+    inputRef.current.select();
   }, []);
 
   return (
@@ -228,10 +229,14 @@ const mapping = {
 };
 
 const ChannelsModal = () => {
-  const { info } = useChannelsModal();
+  const { info, close } = useChannelsModal();
   const Component = mapping[info?.type];
 
-  return <Modal show={Boolean(info?.type)}>{Component && <Component />}</Modal>;
+  return (
+    <Modal show={Boolean(info?.type)} onHide={close}>
+      {Component && <Component />}
+    </Modal>
+  );
 };
 
 export default ChannelsModal;

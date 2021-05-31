@@ -177,6 +177,7 @@ describe('chat', () => {
     userEvent.type(await screen.findByTestId('add-channel'), 'test channel');
     userEvent.click(await screen.findByRole('button', { name: /Отправить/i }));
     expect(await screen.findByRole('button', { name: /test channel/i })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: /test channel/i })).toHaveClass('btn-primary');
   });
 
   test('removing channel', async () => {

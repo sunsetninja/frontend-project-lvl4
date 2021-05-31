@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../features/auth.jsx';
-import { endpoints } from '../features/api.jsx';
+import { useLogger } from '../services/logger.js';
+import { useAuth } from '../services/auth.jsx';
+import { endpoints } from '../services/api.jsx';
 import { actions as channelActions, Channels } from '../features/channels/index.js';
 import { actions as chatActions, Chat } from '../features/chat/index.js';
 import routes from '../routes.js';
-import { useLogger } from '../services/logger.js';
 
 function Home() {
   const history = useHistory();

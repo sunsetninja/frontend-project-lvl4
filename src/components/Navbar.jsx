@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Navbar as BsNavbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../features/auth.jsx';
+import { useAuth } from '../services/auth.jsx';
 
 function Navbar() {
   const { logOut, user } = useAuth();

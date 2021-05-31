@@ -8,8 +8,8 @@ export default {
         uniq: 'Must be unique',
       },
       string: {
-        min: 'Min ${min} characters',
-        max: 'Max ${max} characters',
+        min: 'Min {{min}} characters',
+        max: 'Max {{max}} characters',
       },
       password: {
         match: 'Passwords must match',
