@@ -30,10 +30,10 @@ const withAcknowledgement = (socketFunc) => (...args) => new Promise((resolve, r
 
 export const Provider = ({ children, socket }) => {
   const api = {
-    createChannel: withAcknowledgement((...args) => socket.emit('newChannel', ...args)),
-    editChannel: withAcknowledgement((...args) => socket.emit('renameChannel', ...args)),
-    removeChannel: withAcknowledgement((...args) => socket.emit('removeChannel', ...args)),
-    createMessage: withAcknowledgement((...args) => socket.emit('newMessage', ...args)),
+    createChannel: withAcknowledgement((...args) => socket.volatile.emit('newChannel', ...args)),
+    editChannel: withAcknowledgement((...args) => socket.volatile.emit('renameChannel', ...args)),
+    removeChannel: withAcknowledgement((...args) => socket.volatile.emit('removeChannel', ...args)),
+    createMessage: withAcknowledgement((...args) => socket.volatile.emit('newMessage', ...args)),
   };
 
   return <APIContext.Provider value={api}>{children}</APIContext.Provider>;

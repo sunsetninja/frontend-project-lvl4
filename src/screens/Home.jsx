@@ -29,12 +29,10 @@ function Home() {
       } catch (error) {
         setLoading(false);
 
-        if (error?.response?.status === 401) {
-          history.replace(routes.login());
-          return;
+        if (error?.response?.status !== 401) {
+          throw error;
         }
-        logger.error('Cannot fetch initial data', error);
-        throw error;
+        history.replace(routes.login());
       }
     };
     initApp();

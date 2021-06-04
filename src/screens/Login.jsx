@@ -4,7 +4,6 @@ import { Button, Form } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../services/auth.jsx';
-import { useLogger } from '../services/logger.js';
 import FormField from '../components/FormField.jsx';
 import routes from '../routes.js';
 
@@ -14,7 +13,6 @@ function Login() {
   const history = useHistory();
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
-  const logger = useLogger();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -33,12 +31,11 @@ function Login() {
           history.replace('/');
         } catch (error) {
           setSubmitting(false);
-          if (error?.response?.status === 401) {
-            setAuthFailed(true);
-            return;
+
+          if (error?.response?.status !== 401) {
+            throw error;
           }
-          logger.error('Cannot login', { values, error });
-          throw error;
+          setAuthFailed(true);
         }
       }}
     >

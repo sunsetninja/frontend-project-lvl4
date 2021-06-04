@@ -15,9 +15,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
+    "url": "git@github.com:sunsetninja/frontend-project-lvl4.git"
   },
-  "author": "Kirill Mokevnin",
+  "author": "Dmitriy Balashov<mockedcat@gmail.com>",
   "license": "ISC",
   "homepage": "",
   "dependencies": {

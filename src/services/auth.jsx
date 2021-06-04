@@ -1,7 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react';
 import axios from 'axios';
 import { endpoints } from './api.jsx';
-import { logger } from './logger.js';
 
 const AuthContext = React.createContext({
   user: null,
@@ -12,17 +11,15 @@ const AuthContext = React.createContext({
 export const useAuth = () => useContext(AuthContext);
 
 const getSavedUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem('user'));
-  } catch (error) {
-    logger.warn('Cannot parse saved user', error);
-    console.error(error);
-    return null;
+  const savedUser = localStorage.getItem('user');
+  if (savedUser) {
+    return JSON.parse(savedUser);
   }
+  return savedUser;
 };
 
 export const Provider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(getSavedUser());
+  const [currentUser, setCurrentUser] = useState(getSavedUser);
 
   const value = useMemo(() => {
     const getAuthHeader = () => {

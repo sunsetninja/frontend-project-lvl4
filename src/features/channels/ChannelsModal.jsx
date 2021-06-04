@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import property from 'lodash/property.js';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { useChannel, useChannels } from './slice.js';
+import { useChannel, useChannels } from './hooks.js';
 import { useLogger } from '../../services/logger.js';
 
 const ChannelsModalContext = React.createContext({

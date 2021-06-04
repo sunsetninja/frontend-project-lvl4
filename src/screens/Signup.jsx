@@ -5,7 +5,6 @@ import { Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../services/auth.jsx';
-import { useLogger } from '../services/logger.js';
 import FormField from '../components/FormField.jsx';
 
 function Signup() {
@@ -14,7 +13,6 @@ function Signup() {
   const history = useHistory();
   const [signupFailed, setSignupFailed] = useState(false);
   const auth = useAuth();
-  const logger = useLogger();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -52,12 +50,11 @@ function Signup() {
           history.replace('/');
         } catch (error) {
           setSubmitting(false);
-          if (error?.response?.status === 409) {
-            setSignupFailed(true);
-            return;
+
+          if (error?.response?.status !== 409) {
+            throw error;
           }
-          logger.error('Cannot signup', { values, error });
-          throw error;
+          setSignupFailed(true);
         }
       }}
     >
